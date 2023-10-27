@@ -1,16 +1,14 @@
-import { cssBundleHref } from "@remix-run/css-bundle";
-import type { LinksFunction } from "@remix-run/node";
-import {
-  Links,
-  LiveReload,
-  Meta,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-} from "@remix-run/react";
+import { type LinksFunction } from '@remix-run/node';
+import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
+
+import tailwindStyleSheetUrl from './styles/tailwind.css';
+
+import { Icon } from '#components/Icon';
 
 export const links: LinksFunction = () => [
-  ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
+  ...Icon.links(),
+  { rel: 'preload', href: tailwindStyleSheetUrl, as: 'style' },
+  { rel: 'stylesheet', href: tailwindStyleSheetUrl },
 ];
 
 export default function App() {

@@ -1,4 +1,4 @@
+const { remixConfig } = require('@klukies/eslint-config');
+
 /** @type {import('eslint').Linter.Config} */
-module.exports = {
-  extends: ["@remix-run/eslint-config", "@remix-run/eslint-config/node"],
-};
+module.exports = remixConfig();
