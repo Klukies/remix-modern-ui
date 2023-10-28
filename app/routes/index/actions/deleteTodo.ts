@@ -20,6 +20,8 @@ export const deleteTodo = async (formData: FormData) => {
     return json({ _action: _action.enum.delete, submission });
   }
 
+  // TODO: uncomment the sleep function to see the loading state
+  // await sleep(3000);
   await db.delete(todos).where(eq(todos.id, submission.value.id));
 
   return redirect('/');

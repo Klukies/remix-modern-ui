@@ -1,0 +1,52 @@
+@media (prefers-reduced-motion: no-preference) {
+  .icon-button--pending {
+    --hue: 255;
+    --size: 48px;
+    --border: 1px;
+    --speed: 1s;
+    --width: 1px;
+    --height: 1px;
+    position: relative;
+  }
+
+  .icon-button--pending::before {
+    --y: calc((var(--size) * -0.5) + (var(--border) * 0.5));
+    content: '';
+
+    width: var(--width);
+    height: var(--height);
+    background-color: #000;
+    transform: rotate(0deg) translateY(var(--y));
+    animation: spin var(--speed) infinite linear;
+  }
+
+  .icon-button--pending::after {
+    content: '';
+    width: var(--size);
+    aspect-ratio: 1;
+    position: absolute;
+    top: 0%;
+    left: 50%;
+    translate: -50% 0;
+    transform: rotate(0deg);
+    background: conic-gradient(#000, hsl(var(--hue), 0%, 0%), transparent 100%);
+    border-radius: 50%;
+    mask: radial-gradient(
+      transparent calc(((var(--size) * 0.5) - var(--border))),
+      white calc((var(--size) * 0.5) - var(--border) - 1px)
+    );
+    animation: rotate var(--speed) infinite linear;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(-360deg) translateY(var(--y));
+    }
+  }
+
+  @keyframes rotate {
+    to {
+      transform: rotate(-360deg);
+    }
+  }
+}

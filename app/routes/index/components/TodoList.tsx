@@ -1,4 +1,4 @@
-import { Form, useLoaderData } from '@remix-run/react';
+import { Form, useLoaderData, useNavigation } from '@remix-run/react';
 
 import { _action } from '../actions/schemas';
 import { type loader } from '../route';
@@ -9,6 +9,24 @@ import { IconButton } from '#components/IconButton';
 import { ListItem } from '#components/ListItem';
 import { UnorderedList } from '#components/UnorderedList';
 import { type Todo } from '#services/drizzle/schema';
+
+const DeleteTodoForm = ({ id }: Pick<Todo, 'id'>) => {
+  const navigation = useNavigation();
+  const isPending =
+    navigation.state !== 'idle' &&
+    navigation.formData?.get('_action') === _action.enum.delete &&
+    navigation.formData?.get('id') === id.toString();
+
+  return (
+    <Form method="POST" className="ml-auto">
+      <IconButton pending={isPending}>
+        <Icon name="trash" />
+      </IconButton>
+      <input type="hidden" name="_action" value={_action.enum.delete} />
+      <input type="hidden" name="id" value={id} />
+    </Form>
+  );
+};
 
 const TodoListItem = ({ id, title, isCompleted }: Pick<Todo, 'id' | 'title' | 'isCompleted'>) => {
   return (
@@ -26,13 +44,7 @@ const TodoListItem = ({ id, title, isCompleted }: Pick<Todo, 'id' | 'title' | 'i
         <input type="hidden" name="_action" value={_action.enum.toggle} />
         <input type="hidden" name="id" value={id} />
       </Form>
-      <Form method="POST" replace className="ml-auto">
-        <IconButton>
-          <Icon name="trash" />
-        </IconButton>
-        <input type="hidden" name="_action" value={_action.enum.delete} />
-        <input type="hidden" name="id" value={id} />
-      </Form>
+      <DeleteTodoForm id={id} />
     </ListItem>
   );
 };

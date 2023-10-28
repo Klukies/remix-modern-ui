@@ -4,9 +4,11 @@ import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@re
 import tailwindStyleSheetUrl from './styles/tailwind.css';
 
 import { Icon } from '#components/Icon';
+import { IconButton } from '#components/IconButton';
 
 export const links: LinksFunction = () => [
   ...Icon.links(),
+  ...IconButton.links(),
   { rel: 'preload', href: tailwindStyleSheetUrl, as: 'style' },
   { rel: 'stylesheet', href: tailwindStyleSheetUrl },
 ];
