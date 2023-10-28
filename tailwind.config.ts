@@ -78,8 +78,25 @@ export default {
       transparent: 'transparent',
     },
     extend: {
+      animation: {
+        'toast-slide-in-out':
+          'toast-slide-in 0.3s ease-out, toast-slide-out 0.3s 3s ease-in forwards',
+      },
       aria: {
         invalid: 'invalid="true"',
+      },
+      boxShadow: {
+        3: '21.4px 36px 35.8px -4.3px rgba(199, 197, 193, 0.07), 13.9px 23.4px 23.3px -3.7px rgba(199, 197, 193, 0.10), 8.5px 14.3px 14.2px -3.1px rgba(199, 197, 193, 0.13), 4.9px 8.2px 8.2px -2.5px rgba(199, 197, 193, 0.16), 2.6px 4.4px 4.4px -1.8px rgba(199, 197, 193, 0.19), 1.4px 2.3px 2.3px -1.2px rgba(199, 197, 193, 0.22), 0.8px 1.3px 1.3px -0.6px rgba(199, 197, 193, 0.25), 0.4px 0.7px 0.7px 0px rgba(199, 197, 193, 0.28);',
+      },
+      keyframes: {
+        'toast-slide-in': {
+          from: { opacity: '0.8', transform: 'translateX(calc(100% + 48px))' },
+          to: { opacity: '1', transform: 'translateX(0)' },
+        },
+        'toast-slide-out': {
+          from: { opacity: '1', transform: 'translateX(0)' },
+          to: { opacity: '0.8', transform: 'translateX(calc(100% + 48px))' },
+        },
       },
     },
   },

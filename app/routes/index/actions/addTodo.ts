@@ -1,11 +1,13 @@
 import { parse } from '@conform-to/zod';
-import { json, redirect } from '@remix-run/node';
+import { json } from '@remix-run/node';
 import { z } from 'zod';
 
 import { _action } from './schemas';
 
 import { db } from '#services/drizzle';
 import { todos } from '#services/drizzle/schema';
+import { toastVariant } from '#utils/toast';
+import { redirectWithToast } from '#utils/toast.server';
 
 export const addTodoSchema = z.object({
   _action: z.literal(_action.enum.add),
@@ -19,7 +21,13 @@ export const addTodo = async (formData: FormData) => {
     return json({ _action: _action.enum.add, submission });
   }
 
-  await db.insert(todos).values({ title: submission.value.title });
+  try {
+    // TODO: uncomment the error to see the error toast
+    // throw new Error();
+    await db.insert(todos).values({ title: submission.value.title });
+  } catch (error) {
+    return redirectWithToast('/', { variant: toastVariant.enum.error, _action: _action.enum.add });
+  }
 
-  return redirect('/');
+  return redirectWithToast('/', { variant: 'success', _action: _action.enum.add });
 };

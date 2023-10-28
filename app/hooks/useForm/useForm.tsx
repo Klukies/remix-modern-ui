@@ -1,9 +1,12 @@
 import { type Submission, useForm as useConformForm } from '@conform-to/react';
-import { useActionData, useNavigation } from '@remix-run/react';
+import { useActionData, useLoaderData, useNavigation } from '@remix-run/react';
 import { useEffect, useState } from 'react';
+
+import { toastVariant, type Toast } from '#utils/toast';
 
 export const useForm: typeof useConformForm = (...args) => {
   const navigation = useNavigation();
+  const toast = useLoaderData<{ toast?: Toast }>().toast;
   const actionData = useActionData<{ submission?: Submission }>();
   const [hasSubmitted, setHasSubmitted] = useState(navigation.state === 'submitting');
 
@@ -16,10 +19,15 @@ export const useForm: typeof useConformForm = (...args) => {
   }, [hasSubmitted, navigation.state]);
 
   useEffect(() => {
-    if (navigation.state === 'idle' && !actionData && hasSubmitted) {
+    if (
+      navigation.state === 'idle' &&
+      !actionData &&
+      hasSubmitted &&
+      toast?.variant !== toastVariant.enum.error
+    ) {
       form.ref.current?.reset();
     }
-  }, [navigation.state, actionData, form.ref, hasSubmitted]);
+  }, [navigation.state, actionData, form.ref, hasSubmitted, toast?.variant]);
 
   return [form, fields];
 };
