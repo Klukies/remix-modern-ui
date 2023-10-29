@@ -3,6 +3,7 @@
   "private": true,
   "sideEffects": false,
   "type": "module",
+  "license": "MIT",
   "imports": {
     "#components*": "./app/components*",
     "#hooks*": "./app/hooks*",
@@ -16,9 +17,10 @@
     "build:remix": "remix build",
     "predev": "npm run build:icons --silent",
     "dev": "remix dev --manual",
+    "setup": "npm run build && npm run drizzle:migrate",
     "start": "remix-serve ./build/index.js",
-    "migrate": "drizzle-kit generate:sqlite && drizzle-kit push:sqlite",
-    "drop": "drizzle-kit drop",
+    "drizzle:migrate": "drizzle-kit generate:sqlite && drizzle-kit push:sqlite",
+    "drizzle:drop": "drizzle-kit drop",
     "drizzle:studio": "drizzle-kit studio",
     "lint": "eslint --fix --ext .tsx,ts app/",
     "typecheck": "tsc"
