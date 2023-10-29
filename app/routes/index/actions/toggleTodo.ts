@@ -7,6 +7,9 @@ import { _action } from './schemas';
 
 import { db } from '#services/drizzle';
 import { todos } from '#services/drizzle/schema';
+import { sleep } from '#utils/misc';
+import { toastVariant } from '#utils/toast';
+import { jsonWithToast } from '#utils/toast.server';
 
 export const toggleTodoSchema = z.object({
   _action: z.literal(_action.enum.toggle),
@@ -20,10 +23,22 @@ export const toggleTodo = async (formData: FormData) => {
     return json({ _action: _action.enum.toggle, submission });
   }
 
-  await db
-    .update(todos)
-    .set({ isCompleted: sql`not isCompleted` })
-    .where(eq(todos.id, submission.value.id));
+  try {
+    // TODO: uncomment the sleep function to see optmistic ui in action
+    await sleep(3000);
+    // TODO: uncomment the error to see how we handle errors with optmistic ui
+    // throw new Error();
+    await db
+      .update(todos)
+      .set({ isCompleted: sql`not isCompleted` })
+      .where(eq(todos.id, submission.value.id));
 
-  return new Response(null, { status: 204 });
+    return new Response(null, { status: 204 });
+  } catch (error) {
+    return jsonWithToast({
+      data: { error: true },
+      init: { status: 500 },
+      toast: { variant: toastVariant.enum.error, _action: _action.enum.toggle },
+    });
+  }
 };

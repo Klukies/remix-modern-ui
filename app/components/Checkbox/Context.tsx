@@ -15,6 +15,7 @@ export type CheckboxButtonContext = {
 };
 
 export type CheckboxInputContext = {
+  as?: never;
   id: string;
   checked?: boolean;
   defaultChecked?: boolean;

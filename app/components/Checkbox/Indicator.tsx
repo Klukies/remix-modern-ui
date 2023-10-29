@@ -19,11 +19,17 @@ type IndicatorProps = IndicatorInputProps | IndicatorButtonProps;
 const IndicatorButton = ({ className, ...props }: IndicatorButtonProps) => {
   const { id, defaultChecked, checked, onChange } = useCheckbox<CheckboxButtonContext>();
   const [previousDefaultChecked, setPreviousDefaultChecked] = useState(defaultChecked);
-  const [isChecked, setIsChecked] = useState(defaultChecked ?? !!checked);
+  const [previousChecked, setPreviousChecked] = useState(defaultChecked);
+  const [isChecked, setIsChecked] = useState(defaultChecked ?? checked);
 
   if (previousDefaultChecked !== defaultChecked) {
     setPreviousDefaultChecked(defaultChecked);
-    setIsChecked(!!defaultChecked);
+    setIsChecked(defaultChecked);
+  }
+
+  if (previousChecked !== checked) {
+    setPreviousChecked(checked);
+    setIsChecked(checked);
   }
 
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
@@ -103,7 +109,7 @@ const Indicator = (props: IndicatorProps) => {
       >
         <path
           className={cn(
-            'stroke-dashoffset-[-75] stroke-[2.5px]',
+            'stroke-[2.5px] stroke-dashoffset-[-75]',
             'peer-checked:group-[]:stroke-dashoffset-[0] peer-aria-checked:group-[]:stroke-dashoffset-[0]',
             'motion-safe:transition-[stroke-dashoffset] motion-safe:duration-300 motion-safe:ease-out',
           )}
