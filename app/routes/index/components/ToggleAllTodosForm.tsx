@@ -1,18 +1,20 @@
-import { Form, useLoaderData } from '@remix-run/react';
+import { useFetcher, useLoaderData } from '@remix-run/react';
 
 import { _action } from '../actions/schemas';
+import { type toggleAllTodos } from '../actions/toggleAllTodos';
 import { type loader } from '../route';
 
 import { Checkbox } from '#components/Checkbox';
 
-export const CompleteAllTodosForm = () => {
+export const ToggleAllTodosForm = () => {
+  const fetcher = useFetcher<typeof toggleAllTodos>();
   const { todos } = useLoaderData<typeof loader>();
-  const areAllTodosCompleted = todos.every((todo) => todo.isCompleted);
   const remainingItems = todos.filter(({ isCompleted }) => !isCompleted).length;
+  const areAllTodosCompleted = remainingItems === 0;
 
   return (
     <div className="flex">
-      <Form method="POST" replace>
+      <fetcher.Form method="POST">
         <Checkbox
           as="button"
           id="toggle-all"
@@ -25,7 +27,7 @@ export const CompleteAllTodosForm = () => {
           </Checkbox.Label>
         </Checkbox>
         <input type="hidden" name="areAllTodosCompleted" value={+areAllTodosCompleted} />
-      </Form>
+      </fetcher.Form>
       <span className="ml-auto">
         {remainingItems} item{remainingItems > 1 ? 's' : ''} left
       </span>

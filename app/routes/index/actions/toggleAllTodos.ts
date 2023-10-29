@@ -1,5 +1,5 @@
 import { parse } from '@conform-to/zod';
-import { json, redirect } from '@remix-run/node';
+import { json } from '@remix-run/node';
 import { z } from 'zod';
 
 import { _action } from './schemas';
@@ -21,5 +21,5 @@ export const toggleAllTodos = async (formData: FormData) => {
 
   await db.update(todos).set({ isCompleted: !submission.value.areAllTodosCompleted });
 
-  return redirect('/');
+  return new Response(null, { status: 204 });
 };

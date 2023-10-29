@@ -1,6 +1,8 @@
-import { Form, useLoaderData, useNavigation } from '@remix-run/react';
+import { useFetcher, useLoaderData } from '@remix-run/react';
 
+import { type deleteTodo } from '../actions/deleteTodo';
 import { _action } from '../actions/schemas';
+import { type toggleTodo } from '../actions/toggleTodo';
 import { type loader } from '../route';
 
 import { Checkbox } from '#components/Checkbox';
@@ -10,28 +12,29 @@ import { ListItem } from '#components/ListItem';
 import { UnorderedList } from '#components/UnorderedList';
 import { type Todo } from '#services/drizzle/schema';
 
-const DeleteTodoForm = ({ id }: Pick<Todo, 'id'>) => {
-  const navigation = useNavigation();
-  const isPending =
-    navigation.state !== 'idle' &&
-    navigation.formData?.get('_action') === _action.enum.delete &&
-    navigation.formData?.get('id') === id.toString();
+type TodoListItemProps = Pick<Todo, 'id' | 'title' | 'isCompleted'>;
+
+const DeleteTodoForm = ({ id }: Pick<TodoListItemProps, 'id'>) => {
+  const fetcher = useFetcher<typeof deleteTodo>();
+  const isPending = fetcher.state !== 'idle';
 
   return (
-    <Form method="POST" className="ml-auto">
+    <fetcher.Form method="POST" className="ml-auto">
       <IconButton pending={isPending}>
         <Icon name="trash" />
       </IconButton>
       <input type="hidden" name="_action" value={_action.enum.delete} />
       <input type="hidden" name="id" value={id} />
-    </Form>
+    </fetcher.Form>
   );
 };
 
-const TodoListItem = ({ id, title, isCompleted }: Pick<Todo, 'id' | 'title' | 'isCompleted'>) => {
+const TodoListItem = ({ id, title, isCompleted }: TodoListItemProps) => {
+  const fetcher = useFetcher<typeof toggleTodo>();
+
   return (
     <ListItem>
-      <Form method="POST" replace id="todo-list-item">
+      <fetcher.Form method="POST" id="todo-list-item">
         <Checkbox
           as="button"
           id={id.toString()}
@@ -43,7 +46,7 @@ const TodoListItem = ({ id, title, isCompleted }: Pick<Todo, 'id' | 'title' | 'i
         </Checkbox>
         <input type="hidden" name="_action" value={_action.enum.toggle} />
         <input type="hidden" name="id" value={id} />
-      </Form>
+      </fetcher.Form>
       <DeleteTodoForm id={id} />
     </ListItem>
   );

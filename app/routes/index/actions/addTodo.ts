@@ -7,7 +7,7 @@ import { _action } from './schemas';
 import { db } from '#services/drizzle';
 import { todos } from '#services/drizzle/schema';
 import { toastVariant } from '#utils/toast';
-import { redirectWithToast } from '#utils/toast.server';
+import { jsonWithToast } from '#utils/toast.server';
 
 export const addTodoSchema = z.object({
   _action: z.literal(_action.enum.add),
@@ -25,9 +25,12 @@ export const addTodo = async (formData: FormData) => {
     // TODO: uncomment the error to see the error toast
     // throw new Error();
     await db.insert(todos).values({ title: submission.value.title });
+    return json(null, { status: 201 });
   } catch (error) {
-    return redirectWithToast('/', { variant: toastVariant.enum.error, _action: _action.enum.add });
+    return jsonWithToast({
+      data: null,
+      init: { status: 500 },
+      toast: { variant: toastVariant.enum.error, _action: _action.enum.add },
+    });
   }
-
-  return redirectWithToast('/', { variant: 'success', _action: _action.enum.add });
 };

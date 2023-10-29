@@ -14,10 +14,10 @@ import { todoToastSchema, type _action } from './actions/schemas';
 import { toggleAllTodos } from './actions/toggleAllTodos';
 import { toggleTodo } from './actions/toggleTodo';
 import { AddTodoForm } from './components/AddTodoForm';
-import { CompleteAllTodosForm } from './components/CompleteAllTodosForm';
 import { Logo } from './components/Logo';
 import { TodoList } from './components/TodoList';
 import { TodoToast } from './components/TodoToast';
+import { ToggleAllTodosForm } from './components/ToggleAllTodosForm';
 
 import { db } from '#services/drizzle';
 import { combineHeaders } from '#utils/headers';
@@ -45,7 +45,7 @@ export default function Index() {
       {!!todos.length && (
         <>
           <hr className="mb-5 mt-3 text-neutral-600" />
-          <CompleteAllTodosForm />
+          <ToggleAllTodosForm />
         </>
       )}
       <TodoToast />

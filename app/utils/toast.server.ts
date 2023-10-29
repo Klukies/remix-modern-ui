@@ -1,4 +1,4 @@
-import { createCookieSessionStorage, redirect } from '@remix-run/node';
+import { type JsonFunction, createCookieSessionStorage, json, redirect } from '@remix-run/node';
 import { type z } from 'zod';
 
 import { type Toast, toastSchema } from './toast';
@@ -27,8 +27,28 @@ export const createToastHeaders = async (toast: Toast) => {
   return new Headers({ 'set-cookie': cookie });
 };
 
-export const redirectWithToast = async (url: string, toast: Toast, init?: ResponseInit) => {
+type RedirectParams = Parameters<typeof redirect>;
+type RedirectWithToastParams = {
+  url: RedirectParams[0];
+  init?: Exclude<RedirectParams[1], number>;
+  toast: Toast;
+};
+
+export const redirectWithToast = async ({ url, init, toast }: RedirectWithToastParams) => {
   return redirect(url, {
+    ...init,
+    headers: combineHeaders(init?.headers, await createToastHeaders(toast)),
+  });
+};
+
+type ResponseConstructorParams = Parameters<JsonFunction>;
+type ResponseWithToastParams<Data> = {
+  data: Data;
+  init?: Exclude<ResponseConstructorParams[1], number>;
+  toast: Toast;
+};
+export const jsonWithToast = async <Data>({ data, init, toast }: ResponseWithToastParams<Data>) => {
+  return json(data, {
     ...init,
     headers: combineHeaders(init?.headers, await createToastHeaders(toast)),
   });

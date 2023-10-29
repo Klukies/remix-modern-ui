@@ -1,4 +1,4 @@
-import { useNavigation } from '@remix-run/react';
+import { useFetchers, useNavigation } from '@remix-run/react';
 import { type ComponentPropsWithoutRef } from 'react';
 
 import { cn } from '#utils/cn';
@@ -9,8 +9,11 @@ type ToastProps = ComponentPropsWithoutRef<'div'> & {
 
 export const Toast = ({ variant, children }: ToastProps) => {
   const navigation = useNavigation();
+  const fetchers = useFetchers();
+  const isSubmitting =
+    navigation.state === 'submitting' || fetchers.some((fetcher) => fetcher.state === 'submitting');
 
-  if (!variant || !children || navigation.state === 'submitting') {
+  if (!variant || !children || isSubmitting) {
     return null;
   }
 

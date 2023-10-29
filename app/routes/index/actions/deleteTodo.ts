@@ -1,5 +1,5 @@
 import { parse } from '@conform-to/zod';
-import { json, redirect } from '@remix-run/node';
+import { json } from '@remix-run/node';
 import { eq } from 'drizzle-orm';
 import { z } from 'zod';
 
@@ -7,6 +7,7 @@ import { _action } from './schemas';
 
 import { db } from '#services/drizzle';
 import { todos } from '#services/drizzle/schema';
+// import { sleep } from '#utils/misc';
 
 export const deleteTodoSchema = z.object({
   _action: z.literal(_action.enum.delete),
@@ -24,5 +25,5 @@ export const deleteTodo = async (formData: FormData) => {
   // await sleep(3000);
   await db.delete(todos).where(eq(todos.id, submission.value.id));
 
-  return redirect('/');
+  return new Response(null, { status: 204 });
 };

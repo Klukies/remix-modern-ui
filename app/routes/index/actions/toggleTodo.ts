@@ -1,5 +1,5 @@
 import { parse } from '@conform-to/zod';
-import { json, redirect } from '@remix-run/node';
+import { json } from '@remix-run/node';
 import { eq, sql } from 'drizzle-orm';
 import { z } from 'zod';
 
@@ -25,5 +25,5 @@ export const toggleTodo = async (formData: FormData) => {
     .set({ isCompleted: sql`not isCompleted` })
     .where(eq(todos.id, submission.value.id));
 
-  return redirect('/');
+  return new Response(null, { status: 204 });
 };
