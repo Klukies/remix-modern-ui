@@ -1,6 +1,6 @@
 import { parse } from '@conform-to/zod';
 import { json } from '@remix-run/node';
-import { eq, sql } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import { z } from 'zod';
 
 import { _action } from './schemas';
@@ -14,6 +14,7 @@ import { jsonWithToast } from '#utils/toast.server';
 export const toggleTodoSchema = z.object({
   _action: z.literal(_action.enum.toggle),
   id: z.number(),
+  isCompleted: z.number(),
 });
 
 export const toggleTodo = async (formData: FormData) => {
@@ -30,7 +31,7 @@ export const toggleTodo = async (formData: FormData) => {
     // throw new Error();
     await db
       .update(todos)
-      .set({ isCompleted: sql`not isCompleted` })
+      .set({ isCompleted: !!submission.value.isCompleted })
       .where(eq(todos.id, submission.value.id));
 
     return new Response(null, { status: 204 });
