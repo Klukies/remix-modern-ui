@@ -21,6 +21,7 @@ import { ToggleAllTodosForm } from './components/ToggleAllTodosForm';
 
 import { db } from '#services/drizzle';
 import { combineHeaders } from '#utils/headers';
+import { getNestedTitle } from '#utils/meta';
 import { getToast } from '#utils/toast.server';
 
 export const links: LinksFunction = () => [...Logo.links()];
@@ -32,7 +33,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   return json({ todos, toast }, { headers: combineHeaders(toastHeaders) });
 };
 
-export const meta: MetaFunction = () => [{ title: 'Pending UI and toasts with Remix' }];
+export const meta: MetaFunction = ({ matches }) => [{ title: getNestedTitle('Todos', matches) }];
 
 export default function Index() {
   const { todos } = useLoaderData<typeof loader>();

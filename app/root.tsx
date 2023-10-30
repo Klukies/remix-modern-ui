@@ -1,4 +1,4 @@
-import { type LinksFunction } from '@remix-run/node';
+import { type MetaFunction, type LinksFunction } from '@remix-run/node';
 import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
 
 import tailwindStyleSheetUrl from './styles/tailwind.css';
@@ -12,6 +12,8 @@ export const links: LinksFunction = () => [
   { rel: 'preload', href: tailwindStyleSheetUrl, as: 'style' },
   { rel: 'stylesheet', href: tailwindStyleSheetUrl },
 ];
+
+export const meta: MetaFunction = () => [{ title: 'Modern UI with Remix' }];
 
 export default function App() {
   return (
