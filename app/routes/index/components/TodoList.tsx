@@ -17,7 +17,7 @@ type TodoListItemProps = Pick<Todo, 'id' | 'title' | 'isCompleted'>;
 const ToggleTodoForm = ({ id, title, isCompleted: initialIsCompleted }: TodoListItemProps) => {
   const fetcher = useFetcher<typeof toggleTodo>();
   const isCompleted =
-    (!!fetcher.formData && fetcher.formData.get('isCompleted') === '1') ?? initialIsCompleted;
+    (fetcher.formData && fetcher.formData.get('isCompleted') === '1') ?? initialIsCompleted;
 
   return (
     <fetcher.Form method="POST" id="todo-list-item">
