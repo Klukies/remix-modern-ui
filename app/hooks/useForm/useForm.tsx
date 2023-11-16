@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { toastVariant, type Toast } from '#utils/toast';
 
 export const useForm: typeof useConformForm = (...args) => {
+  // FIXME: ensure this works with through a native form navigation or with a fetcher
   const navigation = useNavigation();
   const toast = useLoaderData<{ toast?: Toast }>().toast;
   const actionData = useActionData<{ submission?: Submission }>();

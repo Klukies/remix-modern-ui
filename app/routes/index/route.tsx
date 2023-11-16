@@ -1,3 +1,4 @@
+import { parse } from '@conform-to/zod';
 import {
   type LoaderFunctionArgs,
   type ActionFunctionArgs,
@@ -6,11 +7,12 @@ import {
   json,
 } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
-import { type z } from 'zod';
+import invariant from 'invariant';
+import { z } from 'zod';
 
 import { addTodo } from './actions/addTodo';
 import { deleteTodo } from './actions/deleteTodo';
-import { todoToastSchema, type _action } from './actions/schemas';
+import { todoToastSchema, _action } from './actions/schemas';
 import { toggleAllTodos } from './actions/toggleAllTodos';
 import { toggleTodo } from './actions/toggleTodo';
 import { AddTodoForm } from './components/AddTodoForm';
@@ -56,9 +58,10 @@ export default function Index() {
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
-  const entries = Object.fromEntries(formData.entries()) as { _action: z.infer<typeof _action> };
+  const submission = parse(formData, { schema: z.object({ _action }) });
+  invariant(submission.value, '_action is not present in the _action schema');
 
-  switch (entries?._action) {
+  switch (submission.value._action) {
     case 'add':
       return addTodo(formData);
     case 'toggle':
