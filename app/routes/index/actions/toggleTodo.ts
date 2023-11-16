@@ -21,7 +21,7 @@ export const toggleTodo = async (formData: FormData) => {
   const submission = parse(formData, { schema: toggleTodoSchema });
 
   if (!submission.value || submission.intent !== 'submit') {
-    return json({ _action: _action.enum.toggle, submission });
+    return json(submission);
   }
 
   try {

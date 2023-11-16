@@ -16,7 +16,7 @@ export const toggleAllTodos = async (formData: FormData) => {
   const submission = parse(formData, { schema: toggleTodoSchema });
 
   if (!submission.value || submission.intent !== 'submit') {
-    return json({ _action: _action.enum.toggleAll, submission });
+    return json(submission);
   }
 
   await db.update(todos).set({ isCompleted: !submission.value.areAllTodosCompleted });

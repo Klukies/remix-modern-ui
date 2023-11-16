@@ -18,17 +18,17 @@ export const addTodo = async (formData: FormData) => {
   const submission = parse(formData, { schema: addTodoSchema });
 
   if (!submission.value || submission.intent !== 'submit') {
-    return json({ _action: _action.enum.add, submission });
+    return json(submission);
   }
 
   try {
     // TODO: uncomment the error to see the error toast
     // throw new Error();
     await db.insert(todos).values({ title: submission.value.title });
-    return json(null, { status: 201 });
+    return json({ ...submission, payload: null }, { status: 201 });
   } catch (error) {
     return jsonWithToast({
-      data: null,
+      data: submission,
       init: { status: 500 },
       toast: { variant: toastVariant.enum.error, _action: _action.enum.add },
     });

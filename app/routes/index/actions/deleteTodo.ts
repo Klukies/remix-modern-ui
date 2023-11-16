@@ -18,7 +18,7 @@ export const deleteTodo = async (formData: FormData) => {
   const submission = parse(formData, { schema: deleteTodoSchema });
 
   if (!submission.value || submission.intent !== 'submit') {
-    return json({ _action: _action.enum.delete, submission });
+    return json(submission);
   }
 
   // TODO: uncomment the sleep function to see the pending state
