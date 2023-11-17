@@ -6,7 +6,7 @@ const links: LinksFunction = () => [
 
 export const Logo = () => {
   return (
-    <div className="mb-6 flex justify-center">
+    <div className="logo">
       <img src="/images/remix.png" alt="Remix" width={192} height={192} />
     </div>
   );

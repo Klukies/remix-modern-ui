@@ -1,21 +1,14 @@
 import { parse } from '@conform-to/zod';
 import { json } from '@remix-run/node';
 import { eq } from 'drizzle-orm';
-import { z } from 'zod';
 
-import { _action } from './schemas';
+import { _action, toggleTodoSchema } from './schemas';
 
 import { db } from '#services/drizzle';
 import { todos } from '#services/drizzle/schema';
 // import { sleep } from '#utils/misc';
 import { toastVariant } from '#utils/toast';
 import { jsonWithToast } from '#utils/toast.server';
-
-export const toggleTodoSchema = z.object({
-  _action: z.literal(_action.enum.toggle),
-  id: z.number(),
-  isCompleted: z.number(),
-});
 
 export const toggleTodo = async (formData: FormData) => {
   const submission = parse(formData, { schema: toggleTodoSchema });

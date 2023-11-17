@@ -1,18 +1,12 @@
 import { parse } from '@conform-to/zod';
 import { json } from '@remix-run/node';
 import { eq } from 'drizzle-orm';
-import { z } from 'zod';
 
-import { _action } from './schemas';
+import { deleteTodoSchema } from './schemas';
 
 import { db } from '#services/drizzle';
 import { todos } from '#services/drizzle/schema';
 // import { sleep } from '#utils/misc';
-
-export const deleteTodoSchema = z.object({
-  _action: z.literal(_action.enum.delete),
-  id: z.number(),
-});
 
 export const deleteTodo = async (formData: FormData) => {
   const submission = parse(formData, { schema: deleteTodoSchema });

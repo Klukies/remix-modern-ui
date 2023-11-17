@@ -1,0 +1,25 @@
+.icon {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.icon__svg {
+  display: inline;
+  align-self: center;
+}
+
+.icon__svg--sm {
+  width: 16px;
+  height: 16px;
+}
+
+.icon__svg--md {
+  width: 20px;
+  height: 20px;
+}
+
+.icon__svg--lg {
+  width: 24px;
+  height: 24px;
+}

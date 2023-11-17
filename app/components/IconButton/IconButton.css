@@ -1,3 +1,35 @@
+.icon-button {
+  display: flex;
+  height: 48px;
+  width: 48px;
+  justify-content: center;
+  align-items: center;
+  padding: var(--spacing-3);
+  border-radius: var(--radius-full);
+
+  &:not(.icon-button--filled):is(:hover, :active:hover) {
+    box-shadow: inset 0 0 0 1px var(--neutral-900);
+  }
+
+  &:not(.icon-button--filled):active {
+    background-color: var(--neutral-200);
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: inset 0 0 0 2px var(--primary-500);
+  }
+}
+
+.icon-button--border {
+  box-shadow: inset 0 0 0 1px var(--neutral-500);
+}
+
+.icon-button--filled {
+  background-color: var(--neutral-900);
+  color: var(--neutral-100);
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .icon-button--pending {
     --hue: 255;
@@ -7,6 +39,10 @@
     --width: 1px;
     --height: 1px;
     position: relative;
+
+    &:hover {
+      box-shadow: none;
+    }
   }
 
   .icon-button--pending::before {

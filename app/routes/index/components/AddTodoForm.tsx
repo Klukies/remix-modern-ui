@@ -3,8 +3,8 @@ import { parse } from '@conform-to/zod';
 import { useFetcher } from '@remix-run/react';
 import { type z } from 'zod';
 
-import { addTodoSchema, type addTodo } from '../actions/addTodo';
-import { _action } from '../actions/schemas';
+import { type addTodo } from '../actions/addTodo';
+import { addTodoSchema, _action } from '../actions/schemas';
 
 import { FormGroup } from '#components/FormGroup';
 
@@ -18,7 +18,7 @@ export const AddTodoForm = () => {
   });
 
   return (
-    <fetcher.Form method="POST" {...form.props} className="mb-6">
+    <fetcher.Form method="POST" {...form.props} className="add-todo-form">
       <FormGroup>
         <FormGroup.InputField
           placeholder="What do you have to do?"

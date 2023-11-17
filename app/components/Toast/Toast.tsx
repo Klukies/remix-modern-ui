@@ -1,13 +1,14 @@
 import { useFetchers, useNavigation } from '@remix-run/react';
+import { clsx } from 'clsx';
 import { type ComponentPropsWithoutRef } from 'react';
 
-import { cn } from '#utils/cn';
+import './Toast.css';
 
 type ToastProps = ComponentPropsWithoutRef<'div'> & {
   variant?: 'success' | 'error';
 };
 
-export const Toast = ({ variant, children }: ToastProps) => {
+export const Toast = ({ variant, className, children }: ToastProps) => {
   const navigation = useNavigation();
   const fetchers = useFetchers();
   const isSubmitting =
@@ -18,15 +19,7 @@ export const Toast = ({ variant, children }: ToastProps) => {
   }
 
   return (
-    <span
-      className={cn(
-        'toast',
-        'fixed bottom-12 right-12 rounded bg-neutral-900 p-5 text-neutral-100 shadow-3',
-        variant === 'error' && 'bg-orange-300',
-        'motion-safe:animate-toast-slide-in-out',
-      )}
-      role="alert"
-    >
+    <span className={clsx('toast', className)} role="alert">
       {children}
     </span>
   );

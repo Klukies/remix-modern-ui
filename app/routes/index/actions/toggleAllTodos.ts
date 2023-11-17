@@ -1,19 +1,13 @@
 import { parse } from '@conform-to/zod';
 import { json } from '@remix-run/node';
-import { z } from 'zod';
 
-import { _action } from './schemas';
+import { toggleAllTodosSchema } from './schemas';
 
 import { db } from '#services/drizzle';
 import { todos } from '#services/drizzle/schema';
 
-export const toggleTodoSchema = z.object({
-  _action: z.literal(_action.enum.toggleAll),
-  areAllTodosCompleted: z.number(),
-});
-
 export const toggleAllTodos = async (formData: FormData) => {
-  const submission = parse(formData, { schema: toggleTodoSchema });
+  const submission = parse(formData, { schema: toggleAllTodosSchema });
 
   if (!submission.value || submission.intent !== 'submit') {
     return json(submission);

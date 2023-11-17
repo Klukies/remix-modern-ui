@@ -1,0 +1,73 @@
+.checkbox__indicator {
+  position: relative;
+}
+
+.checkbox__indicator > :is(button, [type='check']) {
+  cursor: pointer;
+  height: 24px;
+  width: 24px;
+  border-radius: var(--radius-lg);
+  padding: 0;
+  box-shadow: inset 0 0 0 1px var(--neutral-600);
+
+  &:hover {
+    background-color: var(--primary-200);
+    box-shadow: inset 0 0 0 1px var(--primary-500);
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:focus-visible {
+    box-shadow: inset 0 0 0 2px var(--primary-500);
+  }
+
+  &:checked,
+  &[aria-checked='true'] {
+    background-color: var(--primary-200);
+    box-shadow: inset 0 0 0 1px var(--primary-200);
+
+    &:hover {
+      box-shadow: inset 0 0 0 1px var(--primary-500);
+    }
+
+    &:focus-visible {
+      box-shadow: inset 0 0 0 2px var(--primary-500);
+    }
+  }
+}
+
+.checkbox__indicator .checkmark {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  margin: 2px;
+  background-color: transparent;
+  color: var(--primary-500);
+
+  & path {
+    stroke-width: 2.5px;
+    stroke-dashoffset: -75;
+  }
+}
+
+.checkbox__indicator > :is(button[aria-checked='true'], [type='check']:checked) + .checkmark path {
+  stroke-dashoffset: 0;
+}
+
+.checkbox__label {
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .checkbox__indicator .checkmark path {
+    transition: stroke-dashoffset 300ms ease-out;
+  }
+
+  .checkbox__indicator > :is(button, [type='check']) {
+    transition-property: background-color, box-shadow;
+    transition-duration: 150ms;
+    transition-timing-function: ease-in-out;
+  }
+}

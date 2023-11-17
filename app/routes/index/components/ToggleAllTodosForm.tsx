@@ -26,22 +26,17 @@ export const ToggleAllTodosForm = () => {
   const areAllTodosCompleted = remainingItems === 0;
 
   return (
-    <div className="flex">
+    <div className="toggle-all-todos">
       <fetcher.Form method="POST">
-        <Checkbox
-          as="button"
-          id="toggle-all"
-          defaultChecked={areAllTodosCompleted}
-          className="flex items-center"
-        >
-          <Checkbox.Indicator name="_action" value={_action.enum.toggleAll} className="mr-3" />
+        <Checkbox as="button" id="toggle-all" defaultChecked={areAllTodosCompleted}>
+          <Checkbox.Indicator name="_action" value={_action.enum.toggleAll} />
           <Checkbox.Label>
             {areAllTodosCompleted ? 'Uncheck all todos' : 'Check all todos'}
           </Checkbox.Label>
         </Checkbox>
         <input type="hidden" name="areAllTodosCompleted" value={+areAllTodosCompleted} />
       </fetcher.Form>
-      <span className="ml-auto">
+      <span>
         {remainingItems} item{remainingItems > 1 ? 's' : ''} left
       </span>
     </div>
