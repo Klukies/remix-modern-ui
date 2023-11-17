@@ -18,5 +18,5 @@
     "resolveJsonModule": true
   },
   "extends": "@tsconfig/node18/tsconfig.json",
-  "include": ["remix.env.d.ts", "**/*.ts", "**/*.tsx"]
+  "include": ["env.d.ts", "**/*.ts", "**/*.tsx"]
 }

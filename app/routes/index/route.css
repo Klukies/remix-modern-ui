@@ -1,0 +1,48 @@
+main {
+  margin: var(--spacing-16) auto auto;
+  max-width: 768px;
+  padding: 0 var(--spacing-4);
+}
+
+hr {
+  margin: var(--spacing-5) auto var(--spacing-3);
+  color: var(--neutral-600);
+}
+
+.logo {
+  margin-bottom: var(--spacing-6);
+  display: flex;
+  justify-content: center;
+}
+
+.todo-list__item {
+  display: flex;
+  align-items: center;
+}
+
+.add-todo-form {
+  margin-bottom: var(--spacing-6);
+}
+
+:is(.toggle-todo-form, .toggle-all-todos) .checkbox {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+:is(.toggle-todo-form, .toggle-all-todos) .checkbox__indicator {
+  display: flex;
+  gap: var(--spacing-3);
+}
+
+.delete-todo-form {
+  margin-left: auto;
+}
+
+.toggle-all-todos {
+  display: flex;
+
+  & > span {
+    margin-left: auto;
+  }
+}

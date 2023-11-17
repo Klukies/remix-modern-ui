@@ -20,9 +20,9 @@ const ToggleTodoForm = ({ id, title, isCompleted: initialIsCompleted }: TodoList
     (fetcher.formData && fetcher.formData.get('isCompleted') === '1') ?? initialIsCompleted;
 
   return (
-    <fetcher.Form method="POST" id="todo-list-item">
-      <Checkbox as="button" id={id.toString()} className="flex items-center" checked={isCompleted}>
-        <Checkbox.Indicator className="mr-3" />
+    <fetcher.Form method="POST" className="toggle-todo-form">
+      <Checkbox as="button" id={id.toString()} checked={isCompleted}>
+        <Checkbox.Indicator />
         <Checkbox.Label>{title}</Checkbox.Label>
       </Checkbox>
       <input type="hidden" name="_action" value={_action.enum.toggle} />
@@ -37,8 +37,8 @@ const DeleteTodoForm = ({ id }: Pick<TodoListItemProps, 'id'>) => {
   const isPending = fetcher.state !== 'idle';
 
   return (
-    <fetcher.Form method="POST" className="ml-auto">
-      <IconButton pending={isPending}>
+    <fetcher.Form method="POST" className="delete-todo-form">
+      <IconButton pending={isPending} border>
         <Icon name="trash" />
       </IconButton>
       <input type="hidden" name="_action" value={_action.enum.delete} />

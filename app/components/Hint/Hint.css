@@ -1,0 +1,3 @@
+[aria-invalid='true'] + .hint {
+  color: var(--orange-300);
+}

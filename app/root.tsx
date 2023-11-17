@@ -1,17 +1,12 @@
 import { type MetaFunction, type LinksFunction } from '@remix-run/node';
 import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
 
-import tailwindStyleSheetUrl from './styles/tailwind.css';
+import './styles/reset.css';
+import './styles/global.css';
 
 import { Icon } from '#components/Icon';
-import { IconButton } from '#components/IconButton';
 
-export const links: LinksFunction = () => [
-  ...Icon.links(),
-  ...IconButton.links(),
-  { rel: 'preload', href: tailwindStyleSheetUrl, as: 'style' },
-  { rel: 'stylesheet', href: tailwindStyleSheetUrl },
-];
+export const links: LinksFunction = () => [...Icon.links()];
 
 export const meta: MetaFunction = () => [{ title: 'Modern UI with Remix' }];
 

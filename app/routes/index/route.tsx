@@ -26,6 +26,8 @@ import { combineHeaders } from '#utils/headers';
 import { getNestedTitle } from '#utils/meta';
 import { getToast } from '#utils/toast.server';
 
+import './route.css';
+
 export const links: LinksFunction = () => [...Logo.links()];
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -41,13 +43,13 @@ export default function Index() {
   const { todos } = useLoaderData<typeof loader>();
 
   return (
-    <main className="m-auto mt-16 max-w-3xl px-4">
+    <main>
       <Logo />
       <AddTodoForm />
       <TodoList />
       {!!todos.length && (
         <>
-          <hr className="mb-5 mt-3 text-neutral-600" />
+          <hr />
           <ToggleAllTodosForm />
         </>
       )}

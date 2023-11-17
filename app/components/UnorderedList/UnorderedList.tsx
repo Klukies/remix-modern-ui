@@ -1,9 +1,10 @@
+import { clsx } from 'clsx';
 import { type ComponentPropsWithoutRef } from 'react';
 
-import { cn } from '#utils/cn';
+import './UnorderedList.css';
 
 type UnorderedListProps = ComponentPropsWithoutRef<'ul'>;
 
 export const UnorderedList = ({ children, className }: UnorderedListProps) => {
-  return <ul className={cn('m-0 list-none p-0', className)}>{children}</ul>;
+  return <ul className={clsx('unordered-list', className)}>{children}</ul>;
 };
