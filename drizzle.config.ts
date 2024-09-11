@@ -1,7 +1,7 @@
 import { defineConfig } from 'drizzle-kit';
 
 export default defineConfig({
-  driver: 'better-sqlite',
+  dialect: 'sqlite',
   dbCredentials: {
     url: './app/services/drizzle/db.sqlite',
   },

@@ -1,7 +1,5 @@
-/* eslint-disable import/no-named-as-default-member */
 import * as path from 'node:path';
 
-import { $ } from 'execa';
 import fsExtra from 'fs-extra';
 import { glob } from 'glob';
 import { parse } from 'node-html-parser';
@@ -32,7 +30,6 @@ async function writeIfChanged(filepath: string, newContent: string) {
   }
 
   await fsExtra.writeFile(filepath, newContent, 'utf8');
-  await $`prettier --write ${filepath} --ignore-unknown`;
   return true;
 }
 
@@ -93,11 +90,11 @@ async function generateIconFiles() {
 
   const iconNames = files.map((file) => iconName(file));
 
-  const spriteUpToDate = iconNames.every((name) => currentSprite.includes(`id=${name}`));
+  const spriteUpToDate = iconNames.every((name) => currentSprite.includes(`id="${name}"`));
   const typesUpToDate = iconNames.every((name) => currentTypes.includes(`"${name}"`));
 
   if (spriteUpToDate && typesUpToDate) {
-    console.log(`Icons are up to date`);
+    logVerbose(`Icons are up to date`);
     return;
   }
 
@@ -105,11 +102,7 @@ async function generateIconFiles() {
 
   await fsExtra.emptyDir(outputDir);
 
-  const spriteChanged = await generateSvgSprite({
-    files,
-    inputDir,
-    outputPath: spriteFilepath,
-  });
+  const spriteChanged = await generateSvgSprite({ files, inputDir, outputPath: spriteFilepath });
 
   for (const file of files) {
     logVerbose('✅', file);

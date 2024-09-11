@@ -1,7 +1,7 @@
 import { useFetcher, useLoaderData } from '@remix-run/react';
 
 import { type deleteTodo } from '../actions/deleteTodo';
-import { _action } from '../actions/schemas';
+import { intent } from '../actions/schemas';
 import { type toggleTodo } from '../actions/toggleTodo';
 import { type loader } from '../route';
 
@@ -25,7 +25,7 @@ const ToggleTodoForm = ({ id, title, isCompleted: initialIsCompleted }: TodoList
         <Checkbox.Indicator />
         <Checkbox.Label>{title}</Checkbox.Label>
       </Checkbox>
-      <input type="hidden" name="_action" value={_action.enum.toggle} />
+      <input type="hidden" name="intent" value={intent.enum.toggle} />
       <input type="hidden" name="id" value={id} />
       <input type="hidden" name="isCompleted" value={+!initialIsCompleted} />
     </fetcher.Form>
@@ -41,7 +41,7 @@ const DeleteTodoForm = ({ id }: Pick<TodoListItemProps, 'id'>) => {
       <IconButton pending={isPending} border>
         <Icon name="trash" />
       </IconButton>
-      <input type="hidden" name="_action" value={_action.enum.delete} />
+      <input type="hidden" name="intent" value={intent.enum.delete} />
       <input type="hidden" name="id" value={id} />
     </fetcher.Form>
   );
@@ -49,7 +49,7 @@ const DeleteTodoForm = ({ id }: Pick<TodoListItemProps, 'id'>) => {
 
 const TodoListItem = ({ id, title, isCompleted }: TodoListItemProps) => {
   return (
-    <ListItem>
+    <ListItem className="todo-list__item">
       <ToggleTodoForm id={id} title={title} isCompleted={isCompleted} />
       <DeleteTodoForm id={id} />
     </ListItem>

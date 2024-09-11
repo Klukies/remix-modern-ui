@@ -1,25 +1,24 @@
-import { parse } from '@conform-to/zod';
-import { json } from '@remix-run/node';
+import { parseWithZod } from '@conform-to/zod';
 import { eq } from 'drizzle-orm';
 
-import { _action, toggleTodoSchema } from './schemas';
+import { intent, toggleTodoSchema } from './schemas';
 
 import { db } from '#services/drizzle';
 import { todos } from '#services/drizzle/schema';
-// import { sleep } from '#utils/misc';
+import { sleep } from '#utils/misc';
 import { toastVariant } from '#utils/toast';
 import { jsonWithToast } from '#utils/toast.server';
 
 export const toggleTodo = async (formData: FormData) => {
-  const submission = parse(formData, { schema: toggleTodoSchema });
+  const submission = parseWithZod(formData, { schema: toggleTodoSchema });
 
-  if (!submission.value || submission.intent !== 'submit') {
-    return json(submission);
+  if (submission.status !== 'success') {
+    return submission.reply();
   }
 
   try {
     // TODO: uncomment the sleep function to see optmistic ui in action
-    // await sleep(3000);
+    await sleep(3000);
     // TODO: uncomment the error to see how we handle errors with optmistic ui
     // throw new Error();
     await db
@@ -32,7 +31,7 @@ export const toggleTodo = async (formData: FormData) => {
     return jsonWithToast({
       data: { error: true },
       init: { status: 500 },
-      toast: { variant: toastVariant.enum.error, _action: _action.enum.toggle },
+      toast: { variant: toastVariant.enum.error, intent: intent.enum.toggle },
     });
   }
 };

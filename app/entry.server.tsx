@@ -9,7 +9,7 @@ import { PassThrough } from 'node:stream';
 import { type EntryContext } from '@remix-run/node';
 import { createReadableStreamFromReadable } from '@remix-run/node';
 import { RemixServer } from '@remix-run/react';
-import isbot from 'isbot';
+import { isbot } from 'isbot';
 import { renderToPipeableStream } from 'react-dom/server';
 
 import { init } from '#utils/env.server';
@@ -24,7 +24,8 @@ export default function handleRequest(
   headers: Headers,
   context: EntryContext,
 ) {
-  const callbackName = isbot(request.headers.get('user-agent')) ? 'onAllReady' : 'onShellReady';
+  const userAgent = request.headers.get('user-agent');
+  const callbackName = isbot(userAgent ?? '') ? 'onAllReady' : 'onShellReady';
 
   return new Promise((resolve, reject) => {
     let shellRendered = false;

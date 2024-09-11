@@ -1,4 +1,5 @@
-import { parse } from '@conform-to/zod';
+import { parseWithZod } from '@conform-to/zod';
+import { invariant } from '@epic-web/invariant';
 import {
   type LoaderFunctionArgs,
   type ActionFunctionArgs,
@@ -7,12 +8,11 @@ import {
   json,
 } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
-import invariant from 'invariant';
 import { z } from 'zod';
 
 import { addTodo } from './actions/addTodo';
 import { deleteTodo } from './actions/deleteTodo';
-import { todoToastSchema, _action } from './actions/schemas';
+import { todoToastSchema, intent } from './actions/schemas';
 import { toggleAllTodos } from './actions/toggleAllTodos';
 import { toggleTodo } from './actions/toggleTodo';
 import { AddTodoForm } from './components/AddTodoForm';
@@ -60,10 +60,10 @@ export default function Index() {
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
-  const submission = parse(formData, { schema: z.object({ _action }) });
-  invariant(submission.value, '_action is not present in the _action schema');
+  const submission = parseWithZod(formData, { schema: z.object({ intent }) });
+  invariant(submission.status === 'success', 'No intent found in form data');
 
-  switch (submission.value._action) {
+  switch (submission.value.intent) {
     case 'add':
       return addTodo(formData);
     case 'toggle':

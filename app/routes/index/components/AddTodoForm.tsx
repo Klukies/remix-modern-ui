@@ -1,10 +1,10 @@
-import { conform, useForm } from '@conform-to/react';
-import { parse } from '@conform-to/zod';
+import { getFormProps, getInputProps, useForm } from '@conform-to/react';
+import { parseWithZod } from '@conform-to/zod';
 import { useFetcher } from '@remix-run/react';
 import { type z } from 'zod';
 
 import { type addTodo } from '../actions/addTodo';
-import { addTodoSchema, _action } from '../actions/schemas';
+import { addTodoSchema, intent } from '../actions/schemas';
 
 import { FormGroup } from '#components/FormGroup';
 
@@ -13,22 +13,22 @@ export const AddTodoForm = () => {
 
   const [form, fields] = useForm<z.infer<typeof addTodoSchema>>({
     id: 'add-todo',
-    lastSubmission: fetcher.data,
-    onValidate: ({ formData }) => parse(formData, { schema: addTodoSchema }),
+    lastResult: fetcher.data,
+    onValidate: ({ formData }) => parseWithZod(formData, { schema: addTodoSchema }),
   });
 
   return (
-    <fetcher.Form method="POST" {...form.props} className="add-todo-form">
+    <fetcher.Form method="POST" {...getFormProps(form)} className="add-todo-form">
       <FormGroup>
         <FormGroup.InputField
+          {...getInputProps(fields.title, { type: 'text' })}
           placeholder="What do you have to do?"
           aria-label="Add new todo item"
           autoComplete="off"
-          {...conform.input(fields.title)}
         />
-        <FormGroup.Hint id={fields.title.errorId}>{fields.title.error}</FormGroup.Hint>
+        <FormGroup.Hint id={fields.title.errorId}>{fields.title.errors?.[0]}</FormGroup.Hint>
       </FormGroup>
-      <input type="hidden" name="_action" value={_action.enum.add} />
+      <input type="hidden" name="intent" value={intent.enum.add} />
     </fetcher.Form>
   );
 };

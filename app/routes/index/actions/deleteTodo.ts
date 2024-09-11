@@ -1,22 +1,21 @@
-import { parse } from '@conform-to/zod';
-import { json } from '@remix-run/node';
+import { parseWithZod } from '@conform-to/zod';
 import { eq } from 'drizzle-orm';
 
 import { deleteTodoSchema } from './schemas';
 
 import { db } from '#services/drizzle';
 import { todos } from '#services/drizzle/schema';
-// import { sleep } from '#utils/misc';
+import { sleep } from '#utils/misc';
 
 export const deleteTodo = async (formData: FormData) => {
-  const submission = parse(formData, { schema: deleteTodoSchema });
+  const submission = parseWithZod(formData, { schema: deleteTodoSchema });
 
-  if (!submission.value || submission.intent !== 'submit') {
-    return json(submission);
+  if (submission.status !== 'success') {
+    return submission.reply();
   }
 
   // TODO: uncomment the sleep function to see the pending state
-  // await sleep(3000);
+  await sleep(3000);
   await db.delete(todos).where(eq(todos.id, submission.value.id));
 
   return new Response(null, { status: 204 });

@@ -1,7 +1,7 @@
-import { parse } from '@conform-to/zod';
+import { parseWithZod } from '@conform-to/zod';
 import { json } from '@remix-run/node';
 
-import { _action, addTodoSchema } from './schemas';
+import { intent, addTodoSchema } from './schemas';
 
 import { db } from '#services/drizzle';
 import { todos } from '#services/drizzle/schema';
@@ -9,10 +9,10 @@ import { toastVariant } from '#utils/toast';
 import { jsonWithToast } from '#utils/toast.server';
 
 export const addTodo = async (formData: FormData) => {
-  const submission = parse(formData, { schema: addTodoSchema });
+  const submission = parseWithZod(formData, { schema: addTodoSchema });
 
-  if (!submission.value || submission.intent !== 'submit') {
-    return json(submission);
+  if (submission.status !== 'success') {
+    return submission.reply();
   }
 
   try {
@@ -24,7 +24,7 @@ export const addTodo = async (formData: FormData) => {
     return jsonWithToast({
       data: submission,
       init: { status: 500 },
-      toast: { variant: toastVariant.enum.error, _action: _action.enum.add },
+      toast: { variant: toastVariant.enum.error, intent: intent.enum.add },
     });
   }
 };
